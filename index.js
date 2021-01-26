@@ -43,8 +43,28 @@ app.get("/insert1", async (req, res) => {
 });
 //to insert data to the database
 app.post('/insert-cs', async (req,res)=>{
-    const case_study =new CaseStudyModel({project_id:req.body.project_id, client_name:req.body.client_name, industry:req.body.industry,
-        problem:req.body.problem, idea:req.body.idea, impact:req.body.impact});
+    let tagwords = new Set([]);
+    tagwords.add(req.body.project_id);
+    tagwords.add(req.body.client_name);
+    tagwords.add(req.body.Project_industry);
+    tagwords.add(req.body.problem);
+    tagwords.add(req.body.idea);
+    tagwords.add(req.body.impact);
+
+
+    const case_study =new CaseStudyModel({
+        project_id:req.body.project_id,
+        client_name:req.body.client_name,
+        Project_industry:req.body.Project_industry,
+        Project_type:req.body.Project_type,
+        project_name:req.body.project_name,
+        problem_space:req.body.problem_space,
+        approach:req.body.approach,
+        idea:req.body.idea,
+        impact:req.body.impact,
+        EmployeeID:"ibm",
+        project_status:"completed",
+        tags: tagwords});
     await case_study.save();
     res.send('Inserted Data');
 });
