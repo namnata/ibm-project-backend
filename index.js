@@ -7,7 +7,7 @@ const CaseStudyModel= require('./models/CS-info');
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://josemartDB1:Tin2martin@cluster0.5aruf.mongodb.net/student-management?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority",
     {
         useNewUrlParser:true,
         useUnifiedTopology:true
