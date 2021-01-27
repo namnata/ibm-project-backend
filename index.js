@@ -4,18 +4,23 @@ const  cors = require('cors');
 const mongoose = require('mongoose');
 const UserModel= require('./models/User-info');
 const CaseStudyModel= require('./models/CS-info');
+const bodyParser = require('body-parser');
+const url = require('url');
+const querystring = require('querystring');
+
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://josemartDB1:Tin2martin@cluster0.5aruf.mongodb.net/student-management?retryWrites=true&w=majority",
+mongoose.connect("mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority",
     {
         useNewUrlParser:true,
         useUnifiedTopology:true
     });
 
-app.get("/get-all-cs", async (req, res) => {
-    var query = {client_name: "ABC23"};
-    await CaseStudyModel.find(query, (err, result) =>   {
+app.get("/get-all", async (req, res) => {
+
+
+    await CaseStudyModel.find((err, result) =>   {
         if(err) {
             res.send(err);
         } else {
@@ -24,30 +29,30 @@ app.get("/get-all-cs", async (req, res) => {
     });
     res.send("got data from CSs");
 });
+//filtered search
+app.get("/get-by-id", async (req, res) => {
+    let id = req.query._id;
 
-app.get("/insert1", async (req, res) => {
-    let tagwords = new Set(["apple", "orange", "mango"]);
-    const caseobj = new CaseStudyModel({
+    await CaseStudyModel.find({_id: id},(err, result) =>   {
 
-        project_id: "xyz1",
-        client_name: "ABC23",
-        industry: "DEF",
-        problem: "agggsdhdh",
-        idea: "raeywjrjy",
-        impact: "dshmhmdhn",
-        tags: tagwords
-
+        if(err) {
+            res.send(err);
+        } else {
+            res.setHeader("Content-Type", "text/html");
+            res.send(result);
+        }
     });
-    await caseobj.save();
-    res.send("Inserted data to casestudies");
+    res.send("got data from CSs");
 });
+
+
 //to insert data to the database
 app.post('/insert-cs', async (req,res)=>{
     let tagwords = new Set([]);
     tagwords.add(req.body.project_id);
     tagwords.add(req.body.client_name);
     tagwords.add(req.body.Project_industry);
-    tagwords.add(req.body.problem);
+    tagwords.add(req.body.problem_space);
     tagwords.add(req.body.idea);
     tagwords.add(req.body.impact);
 
@@ -70,7 +75,7 @@ app.post('/insert-cs', async (req,res)=>{
 });
 app.post('/login', async (req, res) => {
     //Need to connect this with the database.
-    await req.body.username['username'] === 'ibm' && req.body.password['password'] ==='ibm' ? res.send({login:'success'}) : res.send({login:'fail'})
+    await req.body.username['username'] === 'ibm' && req.body.password['password'] ==='ibm' ? res.send({login:'success',uName:req.body.username['username']}) : res.send({login:'fail'})
 });
 
 

@@ -55,7 +55,7 @@ const CaseStudySchema = new mongoose.Schema({
     },
     project_status: {
         type: String,
-        requires: true
+        requires: false
     }
 });
 
