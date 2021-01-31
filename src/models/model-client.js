@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
 
-//TODO Clean
-//TODO Different Schema for client
-//TODO Different Schema for tags?
 const ClientSchema = new mongoose.Schema({
-    client_name: this.state.client_name,
-    client_code_name: this.state.client_code_name,
-    client_address: this.state.address,
-    client_phone: this.state.phone,
-    client_email: this.state.email
+    client_name: {type: String},
+    client_code_name: {type: String},
+    client_address: {type: String},
+    client_phone: {type: String},
+    client_email: {type: String}
 });
 
 ClientSchema
