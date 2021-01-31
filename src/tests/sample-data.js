@@ -1,30 +1,26 @@
 const express = require('express');
-const app = express();
-const  cors = require('cors');
-const mongoose = require('mongoose');
-const UserModel= require('./models/User-info');
-const CaseStudyModel= require('./models/CS-info');
-app.use(cors());
-app.use(express.json());
+const mongoose = require('mongoose')
+const UserModel = require('../models/model-user')
 
-mongoose.connect("mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority",
-    {
-        useNewUrlParser:true,
-        useUnifiedTopology:true
-    });
+const router = express.Router();
 
-app.get("/get-all-cs", async (req, res) => {
-    var query = {client_name: "ABC23"};
-    await CaseStudyModel.find(query, (err, result) =>   {
-        if(err) {
-            res.send(err);
-        } else {
-            res.send(result);
-        }
-    });
-    res.send("got data from CSs");
-});
+router.get(
+    '/register-test',
+    async (req, res, next) => {
+        const user = new UserModel( {
+            username: 'Bob',
+            password: 'qwerty1234',
+            email: 'bob@gmail.com'
+        });
+        await user.save()
+            .then(val => {res.send('Registered User')})
+            .catch(err => {res.send('Failed to register user')})
+    }
+);
 
+module.exports = router;
+
+/*
 app.get("/insert1", async (req, res) => {
     let tagwords = new Set(["apple", "orange", "mango"]);
     const caseobj = new CaseStudyModel({
@@ -41,7 +37,7 @@ app.get("/insert1", async (req, res) => {
     await caseobj.save();
     res.send("Inserted data to casestudies");
 });
-//to insert data to the database
+
 app.post('/insert-cs', async (req,res)=>{
     let tagwords = new Set([]);
     tagwords.add(req.body.project_id);
@@ -67,13 +63,4 @@ app.post('/insert-cs', async (req,res)=>{
         tags: tagwords});
     await case_study.save();
     res.send('Inserted Data');
-});
-app.post('/login', async (req, res) => {
-    //Need to connect this with the database.
-    await req.body.username['username'] === 'ibm' && req.body.password['password'] ==='ibm' ? res.send({login:'success'}) : res.send({login:'fail'})
-});
-
-
-app.listen(3001, ()=>{
-    console.log("Server is Listening 3001");
-});
+});*/
