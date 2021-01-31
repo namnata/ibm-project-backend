@@ -36,19 +36,25 @@ async function homeHandler(req, res) {
 /* Creating a case study */
 async function createHandler(req, res) {
     const case_study = new CaseStudyModel({
-        client_name: req.body.client_name,
+        project_name: req.body.project_name,
         project_status: req.body.project_status,
+        project_company: req.body.project_company,
         project_industry: req.body.project_industry,
+        country: req.body.country,
+        city: req.body.city,
         project_start_date: req.body.project_start_date,
         project_end_date: req.body.project_end_date,
-        project_location: req.body.project_location,
-        project_name: req.body.project_name,
         problem_space: req.body.problem_space,
         approach: req.body.approach,
         idea: req.body.idea,
         impact: req.body.impact,
-        tags: req.body.tags,
-        employee_id: req.body.employee_id
+        employee_id: req.body.employee_id,
+        client_name: req.body.client_name,
+        client_code_name: req.body.client_code_name,
+        client_address: req.body.client_address,
+        client_phone: req.body.client_phone,
+        client_email: req.body.client_email,
+        tags: req.body.tags
     });
     await case_study
         .save()

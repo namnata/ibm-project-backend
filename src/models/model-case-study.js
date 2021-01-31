@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 //const ClientModel = require('model-client');
 
 //TODO Clean
-//TODO Different Schema for client
+//TODO Use ClientSchema
 //TODO Different Schema for tags?
 const CaseStudySchema = new mongoose.Schema({
     project_name: {type: String, required: true},
@@ -18,8 +18,11 @@ const CaseStudySchema = new mongoose.Schema({
     idea: {type: String},
     impact: {type: String},
     employee_id: {type: String},
-
-    client: {type: mongoose.Schema.Types.ObjectId, ref: 'ClientSchema'},
+    client_name: {type: String},
+    client_code_name: {type: String},
+    client_address: {type: String},
+    client_phone: {type: String},
+    client_email: {type: String},
     tags: {type: Array},
 });
 
@@ -29,15 +32,3 @@ CaseStudySchema
 
 const CaseStudyModel = mongoose.model('CaseStudy', CaseStudySchema, 'case-studies');
 module.exports = CaseStudyModel;
-
-/*
-project_name: this.state.project_name,
-    client_name: this.state.client_name,
-    client_code_name: this.state.client_code_name,
-    client_address: this.state.address,
-    client_phone: this.state.phone,
-    client_email: this.state.email,
-    problem_space: this.state.problem_space,
-    approach: this.state.approach,
-    idea: this.state.idea,
-    impact: this.state.impact*/

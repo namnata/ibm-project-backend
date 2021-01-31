@@ -8,8 +8,6 @@ const port = 3001;
 
 //TODO Remember to change uri
 const dbURI = 'mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority';
-//const dbURI = 'mongodb+srv://admin:7CCVzEEzbbyYWXS@ibmcasestudies.wc7i2.mongodb.net/case-studies?retryWrites=true&w=majority';
-//const dbURI = 'mongodb+srv://admin:admin@casestudiestest.majhc.mongodb.net/case-studies?retryWrites=true&w=majority';
 
 const app = express();
 app.use(cors());
