@@ -30,17 +30,5 @@ CaseStudySchema
     .virtual('url')
     .get(() => {return '/case-studies/' + this._id});
 
-const CaseStudyModel = mongoose.model('CaseStudy', CaseStudySchema, 'casestudies');
+const CaseStudyModel = mongoose.model('CaseStudy', CaseStudySchema, 'case-studies');
 module.exports = CaseStudyModel;
-
-/*
-project_name: this.state.project_name,
-    client_name: this.state.client_name,
-    client_code_name: this.state.client_code_name,
-    client_address: this.state.address,
-    client_phone: this.state.phone,
-    client_email: this.state.email,
-    problem_space: this.state.problem_space,
-    approach: this.state.approach,
-    idea: this.state.idea,
-    impact: this.state.impact*/
