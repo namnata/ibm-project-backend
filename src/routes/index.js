@@ -89,13 +89,14 @@ async function searchHandler(req, res) {
 
 //TODO Perhaps merge with searchHandler
 async function viewAllHandler(req, res) {
-    const query = {client_name: "ABC23"};
+    //const query = {client_name: "ABC23"};
     await CaseStudyModel
-        .find(query, (err, result) =>   {
+        .find((err, result) =>   {
             if(err) {
                 res.send(err);
             } else {
                 res.send(result);
             }
-        });
+        })
+        .exec();
 }

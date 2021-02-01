@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 //TODO Different Schema for tags?
 const CaseStudySchema = new mongoose.Schema({
     project_name: {type: String, required: true},
-    project_status: {type: String, required: true},
-    project_company: {type: String},
     project_industry: {type: String},
     country: {type: String},
     city: {type: String},
