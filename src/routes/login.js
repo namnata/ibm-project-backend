@@ -3,11 +3,12 @@ const router = express.Router();
 
 /*
  * TODO:
- *  Should query database
+ *  Should query database?
  *  There should probably be some encryption going on
- *  Send status back
+ *  Send status back rather than data
+ *  Send cookie back
  */
-router.post('/', loginHandler);
+router.post('/login', loginHandler);
 
 module.exports = router;
 
