@@ -1,28 +1,36 @@
 const mongoose = require('mongoose');
-//const ClientModel = require('model-client');
 
-//TODO Clean
-//TODO Use ClientSchema
-//TODO Different Schema for tags?
+/*
+ * TODO:
+ *  Clean
+ *  Use ClientSchema
+ *  Different Schema for tags?
+ */
 const CaseStudySchema = new mongoose.Schema({
     project_name: {type: String, required: true},
-    project_status: {type: String, required: true},
-    project_company: {type: String},
     project_industry: {type: String},
-    country: {type: String},
     city: {type: String},
+    country: {type: String},
     project_start_date: {type: String},
     project_end_date: {type: String},
+
+    //TODO Move the following into its own Schema?
     problem_space: {type: String},
     approach: {type: String},
     idea: {type: String},
     impact: {type: String},
+
+    //TODO Do we need this?
     employee_id: {type: String},
+
+    //TODO See about moving into ClientSchema
     client_name: {type: String},
     client_code_name: {type: String},
     client_address: {type: String},
     client_phone: {type: String},
     client_email: {type: String},
+
+    //TODO
     tags: {type: Array},
 });
 
