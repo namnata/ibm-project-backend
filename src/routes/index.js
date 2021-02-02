@@ -25,6 +25,10 @@ router
     .route('/view-all')
     .get(viewAllHandler);
 
+router
+    .route('/view-by-id1')
+    .get(viewById1);
+
 module.exports = router;
 
 /* Request Handlers */
@@ -101,15 +105,16 @@ async function viewAllHandler(req, res) {
 }
 
 //TODO Perhaps merge with searchHandler
-/*async function viewAllHandler(req, res) {
-    //const query = {client_name: "ABC23"};
+async function viewById1(req, res) {
+console.log(req.query)
     await CaseStudyModel
-        .find((err, result) =>   {
+        .find()
+        .exec((err, result) =>   {
             if(err) {
                 res.send(err);
             } else {
                 res.send(result);
             }
         })
-        .exec();
-}*/
+
+}
