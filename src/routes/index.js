@@ -92,7 +92,6 @@ async function searchHandler(req, res) {
 }
 
 async function viewAllHandler(req, res) {
-    //const query = {client_name: "ABC23"};
     await CaseStudyModel
         .find()
         .select('project_name client_name')
