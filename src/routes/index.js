@@ -108,8 +108,10 @@ async function viewAllHandler(req, res) {
 async function viewById1(req, res) {
 console.log(req.query)
     await CaseStudyModel
-        .find()
+        .find({ _id: req.query })
+
         .exec((err, result) =>   {
+            console.log(result);
             if(err) {
                 res.send(err);
             } else {
