@@ -117,8 +117,8 @@ async function UpdateHandler(req, res) {
         tags: req.body.tags
     });
     await case_study
-       updateone({_id:req.body._id},{case_study})
 
+        .updateOne({_id:req.body._id},{case_study})
         .then(val => {
             console.log(val);
 
