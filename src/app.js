@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
+const bodyParser =require("body-parser");
 
 const port = 3001;
 const dbURI = 'mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority';
@@ -10,6 +11,8 @@ const dbURI = 'mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-s
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 app.use(express.json());
 
 mongoose
