@@ -29,6 +29,9 @@ const CaseStudySchema = new mongoose.Schema({
     client_address: {type: String},
     client_phone: {type: String},
     client_email: {type: String},
+    status: {type: String},
+    owner: {type: String},
+    modifiers: {type: Array},
 
     //TODO
     tags: {type: Array},
