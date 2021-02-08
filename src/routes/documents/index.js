@@ -9,16 +9,21 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
        <head>
           <meta charset="utf-8">
           <title>PDF Result Template</title>
-          <style>
+       <style>
+          body {
+                overflow-x: hidden;
+                font-family: 'Roboto Slab', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            }
+            
              .invoice-box {
-             max-width: 800px;
+             max-width: 80%;
              margin: auto;
              padding: 30px;
              border: 1px solid #eee;
              box-shadow: 0 0 10px rgba(0, 0, 0, .15);
              font-size: 16px;
              line-height: 24px;
-             font-family: Algerian;
+             /*font-family: Algerian;*/
              color: #555;
              }
              .margin-top {
@@ -37,7 +42,7 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
              vertical-align: top;
              }
              .invoice-box table tr td:nth-child(2) {
-             text-align: right;
+             text-align: left;
              }
              .invoice-box table tr.top table td {
              padding-bottom: 20px;
@@ -52,7 +57,7 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
              }
              .invoice-box table tr.heading td {
              background: #eee;
-             border-bottom: 1px solid #ddd;
+             border-bottom: 1px solid #666565;
              font-weight: bold;
              }
              .invoice-box table tr.details td {
@@ -68,12 +73,22 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
              border-top: 2px solid #eee;
              font-weight: bold;
              }
+             
+             .table-top-section{
+             background-color: #6e6f70;
+             }
+             .item{
+             text-align: left;
+             }
+             
              @media only screen and (max-width: 600px) {
+             
              .invoice-box table tr.top table td {
              width: 100%;
              display: block;
              text-align: center;
              }
+             
              .invoice-box table tr.information table td {
              width: 100%;
              display: block;
@@ -83,12 +98,14 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
           </style>
        </head>
        <body>
+       <div class="table-responsive">
           <div class="invoice-box">
-             <table cellpadding="0" cellspacing="0">
+<!--             <table cellpadding="0" cellspacing="0">-->
+              <table class="table table-fixed">
                 <tr class="top">
                    <td colspan="2">
                       <table>
-                         <tr>
+                         <tr class="table-top-section">
                             <td class="title"><img  src="https://i2.wp.com/cleverlogos.co/wp-content/uploads/2018/05/reciepthound_1.jpg?fit=800%2C600&ssl=1"
                                style="width:100%; max-width:156px;"></td>
                             <td>
@@ -100,7 +117,7 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
                 </tr>
                 <tr class="information">
                    <td colspan="2">
-                      <table>
+                      <table class="table table-hover table-fixed">
                          <tr>
                             <td>
                                Project name: ${project_name}
@@ -153,24 +170,26 @@ module.exports = ({ project_name, project_industry, country, city, client_name, 
                 </tr>
                 <tr class="item">
                    <td>Problem Space:</td>
-                   <td>${problem_space}</td>
+                   <td style="text-align:left">${problem_space}</td>
                 </tr>
                 <tr class="item">
                    <td>Approach:</td>
-                   <td>${approach}</td>
+                   <td style="text-align:left">${approach}</td>
                 </tr>
                  <tr class="item">
                    <td>Idea:</td>
-                   <td>${idea}</td>
+                   <td style="text-align:left">${idea}</td>
                 </tr>
                 <tr class="item">
                    <td>Impact:</td>
-                   <td>${impact}</td>
+                   <td style="text-align:left">${impact}</td>
                 </tr>
              </table>
              <br />
             
           </div>
+          </div>
+    <!-- end od main table division-->
        </body>
     </html>
     `;
