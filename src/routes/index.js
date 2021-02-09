@@ -41,6 +41,12 @@ router
 router
     .route('/view-all')
     .get(viewAllHandler);
+router
+    .route('/view-your-cs-draft')
+    .get(viewYourCSDraftHandler);
+router
+    .route('/view-your-cs-published')
+    .get(viewYourCSPublishHandler);
 
 router
     .route('/view-by-id1')
@@ -170,7 +176,7 @@ async function searchHandler(req, res) {
 
 async function viewAllHandler(req, res) {
     await CaseStudyModel
-        .find()
+        .find({status: "Published"})
         .select('project_name client_name')
         .exec((err, result) =>   {
             if(err) {
@@ -180,6 +186,31 @@ async function viewAllHandler(req, res) {
             }});
 }
 
+
+
+async function viewYourCSPublishHandler(req, res) {
+    console.log(req);
+    await CaseStudyModel
+        .find({status:"Published"})
+        .select('project_name client_name')
+        .exec((err, result) =>   {
+            if(err) {
+                //TODO
+            } else {
+                res.send(result);
+            }});
+}
+async function viewYourCSDraftHandler(req, res) {
+    await CaseStudyModel
+        .find({status:"Draft"})
+        .select('project_name client_name')
+        .exec((err, result) =>   {
+            if(err) {
+                //TODO
+            } else {
+                res.send(result);
+            }});
+}
 //TODO Perhaps merge with searchHandler
 async function viewById1(req, res) {
     await CaseStudyModel
