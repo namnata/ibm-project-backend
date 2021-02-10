@@ -39,7 +39,7 @@ const CaseStudySchema = new mongoose.Schema({
 
 CaseStudySchema
     .virtual('url')
-    .get(() => {return '/case-studies/' + this._id});
+    .get(() => {return '/ibmcasestudies/' + this._id});
 
-const CaseStudyModel = mongoose.model('CaseStudy', CaseStudySchema, 'case-studies');
+const CaseStudyModel = mongoose.model('CaseStudy', CaseStudySchema, 'casestudies');
 module.exports = CaseStudyModel;

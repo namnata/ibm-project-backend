@@ -38,15 +38,21 @@ router
     .route('/update')
     .post(UpdateHandler);
 
+
+
+router
+    .route('/searchtags')
+    .post(SearchHandler);
+
 router
     .route('/view-all')
     .get(viewAllHandler);
 router
     .route('/view-your-cs-draft')
-    .get(viewYourCSDraftHandler);
+    .post(viewYourCSDraftHandler);
 router
     .route('/view-your-cs-published')
-    .get(viewYourCSPublishHandler);
+    .post(viewYourCSPublishHandler);
 
 router
     .route('/view-by-id1')
@@ -62,12 +68,6 @@ async function homeHandler(req, res) {
 
 /* Creating a case study */
 async function createHandler(req, res) {
-    let tagsinput = new Array();
-    tagsinput = tagsinput.concat((req.body.project_name).split(" "));
-    tagsinput = tagsinput.concat((req.body.problem_space).split(" "));
-    tagsinput = tagsinput.concat((req.body.approach).split(" "));
-    tagsinput = tagsinput.concat((req.body.idea).split(" "));
-    tagsinput = tagsinput.concat((req.body.impact).split(" "));
 
     const case_study = new CaseStudyModel({
         project_name: req.body.project_name,
@@ -81,14 +81,14 @@ async function createHandler(req, res) {
         approach: req.body.approach,
         idea: req.body.idea,
         impact: req.body.impact,
-        employee_id: req.body.employee_id,
+        employee_id: req.body.username,
         client_name: req.body.client_name,
         client_code_name: req.body.client_code_name,
         client_address: req.body.client_address,
         client_phone: req.body.client_phone,
         client_email: req.body.client_email,
-        tags: new Set(tagsinput),
         status: req.body.status
+
     });
     await case_study
         .save()
@@ -105,12 +105,7 @@ async function createHandler(req, res) {
 
 /* Updating a case study */
 async function UpdateHandler(req, res) {
-    let utagsinput = new Array();
-    utagsinput = utagsinput.concat((req.body.project_name).split(" "));
-    utagsinput = utagsinput.concat((req.body.problem_space).split(" "));
-    utagsinput = utagsinput.concat((req.body.approach).split(" "));
-    utagsinput = utagsinput.concat((req.body.idea).split(" "));
-    utagsinput = utagsinput.concat((req.body.impact).split(" "));
+
     const updateDoc = {
         $set: {
             project_name: req.body.project_name,
@@ -125,13 +120,12 @@ async function UpdateHandler(req, res) {
             approach: req.body.approach,
             idea: req.body.idea,
             impact: req.body.impact,
-            employee_id: req.body.employee_id,
+           /* employee_id: req.body.username,*/
             client_name: req.body.client_name,
             client_code_name: req.body.client_code_name,
             client_address: req.body.client_address,
             client_phone: req.body.client_phone,
             client_email: req.body.client_email,
-            tags: new Set(utagsinput),
             status: req.body.status
 
         },
@@ -191,7 +185,7 @@ async function viewAllHandler(req, res) {
 async function viewYourCSPublishHandler(req, res) {
     console.log(req);
     await CaseStudyModel
-        .find({status:"Published"})
+        .find({status:"Published", employee_id:req.body.params.username})
         .select('project_name client_name')
         .exec((err, result) =>   {
             if(err) {
@@ -202,7 +196,7 @@ async function viewYourCSPublishHandler(req, res) {
 }
 async function viewYourCSDraftHandler(req, res) {
     await CaseStudyModel
-        .find({status:"Draft"})
+        .find({status:"Draft", employee_id:req.body.params.username})
         .select('project_name client_name')
         .exec((err, result) =>   {
             if(err) {
@@ -243,4 +237,16 @@ function fetchPdfHandler(req, res) {
 
    res.sendFile( __dirname+  "/CaseStudy.pdf" ,);
 
+}
+
+
+async function SearchHandler(req, res) {
+    let projectIndustry = req.body.project_industry;
+    let clientName = req.body.client_name;
+    let tagData = req.body.tag_data;
+    let searchString = projectIndustry + ' ' + clientName + ' ' + tagData;
+
+    await CaseStudyModel.find({ $text: { $search:  searchString} }, (err, result)=>{
+        res.send(result);
+    })
 }
