@@ -6,7 +6,7 @@ const loginRouter = require('./routes/login');
 const bodyParser =require("body-parser");
 
 const port = 3001;
-const dbURI = 'mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/case-studies?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://admin:admin@ibmcasestudies.mni5s.mongodb.net/ibmcasestudies?retryWrites=true&w=majority';
 
 const app = express();
 

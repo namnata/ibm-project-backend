@@ -38,9 +38,21 @@ router
     .route('/update')
     .post(UpdateHandler);
 
+
+
+router
+    .route('/searchtags')
+    .post(SearchHandler);
+
 router
     .route('/view-all')
     .get(viewAllHandler);
+router
+    .route('/view-your-cs-draft')
+    .post(viewYourCSDraftHandler);
+router
+    .route('/view-your-cs-published')
+    .post(viewYourCSPublishHandler);
 
 router
     .route('/view-by-id1')
@@ -56,12 +68,6 @@ async function homeHandler(req, res) {
 
 /* Creating a case study */
 async function createHandler(req, res) {
-    let tagsinput = new Array();
-    tagsinput = tagsinput.concat((req.body.project_name).split(" "));
-    tagsinput = tagsinput.concat((req.body.problem_space).split(" "));
-    tagsinput = tagsinput.concat((req.body.approach).split(" "));
-    tagsinput = tagsinput.concat((req.body.idea).split(" "));
-    tagsinput = tagsinput.concat((req.body.impact).split(" "));
 
     const case_study = new CaseStudyModel({
         project_name: req.body.project_name,
@@ -75,14 +81,14 @@ async function createHandler(req, res) {
         approach: req.body.approach,
         idea: req.body.idea,
         impact: req.body.impact,
-        employee_id: req.body.employee_id,
+        employee_id: req.body.username,
         client_name: req.body.client_name,
         client_code_name: req.body.client_code_name,
         client_address: req.body.client_address,
         client_phone: req.body.client_phone,
         client_email: req.body.client_email,
-        tags: new Set(tagsinput),
         status: req.body.status
+
     });
     await case_study
         .save()
@@ -99,12 +105,7 @@ async function createHandler(req, res) {
 
 /* Updating a case study */
 async function UpdateHandler(req, res) {
-    let utagsinput = new Array();
-    utagsinput = utagsinput.concat((req.body.project_name).split(" "));
-    utagsinput = utagsinput.concat((req.body.problem_space).split(" "));
-    utagsinput = utagsinput.concat((req.body.approach).split(" "));
-    utagsinput = utagsinput.concat((req.body.idea).split(" "));
-    utagsinput = utagsinput.concat((req.body.impact).split(" "));
+
     const updateDoc = {
         $set: {
             project_name: req.body.project_name,
@@ -119,13 +120,12 @@ async function UpdateHandler(req, res) {
             approach: req.body.approach,
             idea: req.body.idea,
             impact: req.body.impact,
-            employee_id: req.body.employee_id,
+           /* employee_id: req.body.username,*/
             client_name: req.body.client_name,
             client_code_name: req.body.client_code_name,
             client_address: req.body.client_address,
             client_phone: req.body.client_phone,
             client_email: req.body.client_email,
-            tags: new Set(utagsinput),
             status: req.body.status
 
         },
@@ -170,7 +170,7 @@ async function searchHandler(req, res) {
 
 async function viewAllHandler(req, res) {
     await CaseStudyModel
-        .find()
+        .find({status: "Published"})
         .select('project_name client_name')
         .exec((err, result) =>   {
             if(err) {
@@ -180,6 +180,31 @@ async function viewAllHandler(req, res) {
             }});
 }
 
+
+
+async function viewYourCSPublishHandler(req, res) {
+    console.log(req);
+    await CaseStudyModel
+        .find({status:"Published", employee_id:req.body.params.username})
+        .select('project_name client_name')
+        .exec((err, result) =>   {
+            if(err) {
+                //TODO
+            } else {
+                res.send(result);
+            }});
+}
+async function viewYourCSDraftHandler(req, res) {
+    await CaseStudyModel
+        .find({status:"Draft", employee_id:req.body.params.username})
+        .select('project_name client_name')
+        .exec((err, result) =>   {
+            if(err) {
+                //TODO
+            } else {
+                res.send(result);
+            }});
+}
 //TODO Perhaps merge with searchHandler
 async function viewById1(req, res) {
     await CaseStudyModel
@@ -213,3 +238,50 @@ function fetchPdfHandler(req, res) {
    res.sendFile( __dirname+  "/CaseStudy.pdf" ,);
 
 }
+
+
+async function SearchHandler(req, res) {
+let filter;
+    let projectIndustry = req.body.project_industry;
+
+
+    let clientName = req.body.client_name;
+    let tagData = req.body.tag_data;
+   /* console.log(req.body);*/
+    console.log(projectIndustry);
+    console.log(clientName);
+    console.log(tagData);
+/*    if((tagData === '') && (projectIndustry === '0') && (clientName === '0') ){ filter= ''};*/
+    if((tagData === '') && (projectIndustry === '') && !(clientName === '') ){ console.log(1);await CaseStudyModel.find({client_name:clientName}, (err, result)=>{ res.send(result)})};
+    if((tagData === '') && !(projectIndustry === '') && (clientName === '') ){ console.log(2);await CaseStudyModel.find({project_industry:projectIndustry}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && (projectIndustry === '') && (clientName === '') ){console.log(3);await CaseStudyModel.find({$text:{$search:tagData}}, (err, result)=>{
+        res.send(result)})};
+    if((tagData === '') && !(projectIndustry === '') && !(clientName === '') ){console.log(4);await CaseStudyModel.find({project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && (projectIndustry === '') && !(clientName === '') ){console.log(5); await CaseStudyModel.find({$text:{$search:tagData},client_name:clientName}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && !(projectIndustry === '') && (clientName === '') ){console.log(6);await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && !(projectIndustry === '') && !(clientName === '') ){console.log(7);await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})} /*else {await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})}*/
+
+
+
+    /*if(tagData === ''){  if(projectIndustry === ''){await CaseStudyModel.find({client_name:clientName}, (err, result)=>{
+      res.send(result);})} else await CaseStudyModel.find({project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+      res.send(result);
+  })}else {await CaseStudyModel.find({$text:{$search:tagData},$or: [{project_industry:projectIndustry},{client_name:clientName}]}, (err, result)=>{
+      res.send(result);
+  })}*/
+ /*       if(projectIndustry === '0' && clientName === '0'){filter = { $text: { $search:  tagData}}};*/
+    /*  if(tag_data === null && clientName === '0'){filter = { project_industry: projectIndustry}};
+     if(tagData === null){tagData=".*.*"};
+     let searchString = "a" + ' ' + tagData;
+ console.log(projectIndustry +"-/-"+searchString);*/
+    /*await CaseStudyModel.find({$text:{$search:tagData},$or: [{project_industry:projectIndustry},{client_name:clientName}]}, (err, result)=>{
+        res.send(result);
+    })*/
+}
+
