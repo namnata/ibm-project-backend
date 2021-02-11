@@ -241,12 +241,47 @@ function fetchPdfHandler(req, res) {
 
 
 async function SearchHandler(req, res) {
+let filter;
     let projectIndustry = req.body.project_industry;
+
+
     let clientName = req.body.client_name;
     let tagData = req.body.tag_data;
-    let searchString = projectIndustry + ' ' + clientName + ' ' + tagData;
+   /* console.log(req.body);*/
+    console.log(projectIndustry);
+    console.log(clientName);
+    console.log(tagData);
+/*    if((tagData === '') && (projectIndustry === '0') && (clientName === '0') ){ filter= ''};*/
+    if((tagData === '') && (projectIndustry === '') && !(clientName === '') ){ console.log(1);await CaseStudyModel.find({client_name:clientName}, (err, result)=>{ res.send(result)})};
+    if((tagData === '') && !(projectIndustry === '') && (clientName === '') ){ console.log(2);await CaseStudyModel.find({project_industry:projectIndustry}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && (projectIndustry === '') && (clientName === '') ){console.log(3);await CaseStudyModel.find({$text:{$search:tagData}}, (err, result)=>{
+        res.send(result)})};
+    if((tagData === '') && !(projectIndustry === '') && !(clientName === '') ){console.log(4);await CaseStudyModel.find({project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && (projectIndustry === '') && !(clientName === '') ){console.log(5); await CaseStudyModel.find({$text:{$search:tagData},client_name:clientName}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && !(projectIndustry === '') && (clientName === '') ){console.log(6);await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry}, (err, result)=>{
+        res.send(result)})};
+    if(!(tagData === '') && !(projectIndustry === '') && !(clientName === '') ){console.log(7);await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})} /*else {await CaseStudyModel.find({$text:{$search:tagData},project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+        res.send(result)})}*/
 
-    await CaseStudyModel.find({ $text: { $search:  searchString} }, (err, result)=>{
+
+
+    /*if(tagData === ''){  if(projectIndustry === ''){await CaseStudyModel.find({client_name:clientName}, (err, result)=>{
+      res.send(result);})} else await CaseStudyModel.find({project_industry:projectIndustry,client_name:clientName}, (err, result)=>{
+      res.send(result);
+  })}else {await CaseStudyModel.find({$text:{$search:tagData},$or: [{project_industry:projectIndustry},{client_name:clientName}]}, (err, result)=>{
+      res.send(result);
+  })}*/
+ /*       if(projectIndustry === '0' && clientName === '0'){filter = { $text: { $search:  tagData}}};*/
+    /*  if(tag_data === null && clientName === '0'){filter = { project_industry: projectIndustry}};
+     if(tagData === null){tagData=".*.*"};
+     let searchString = "a" + ' ' + tagData;
+ console.log(projectIndustry +"-/-"+searchString);*/
+    /*await CaseStudyModel.find({$text:{$search:tagData},$or: [{project_industry:projectIndustry},{client_name:clientName}]}, (err, result)=>{
         res.send(result);
-    })
+    })*/
 }
+
